@@ -65,7 +65,7 @@ namespace InteractiveTable
                 case "System.Windows.Forms.Button, Text: ЮГ":
                     if (_buttonSouthEnabled)
                     {
-                        button_South.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+                        button_South.BackColor = System.Drawing.Color.White;
                         _buttonSouthEnabled = false;
                     }
                     else
@@ -77,7 +77,7 @@ namespace InteractiveTable
                 case "System.Windows.Forms.Button, Text: СЕВЕР":
                     if (_buttonNordEnabled)
                     {
-                        button_Nord.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+                        button_Nord.BackColor = System.Drawing.Color.White;
                         _buttonNordEnabled = false;
                     }
                     else
@@ -89,7 +89,7 @@ namespace InteractiveTable
                 case "System.Windows.Forms.Button, Text: ЗАО":
                     if (_buttonVasEnabled)
                     {
-                        button_Vas.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+                        button_Vas.BackColor = System.Drawing.Color.White;
                         _buttonVasEnabled = false;
                     }
                     else
@@ -101,7 +101,7 @@ namespace InteractiveTable
                 case "System.Windows.Forms.Button, Text: ЖКС3":
                     if (_buttonGks3Enabled)
                     {
-                        button_GKS3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+                        button_GKS3.BackColor = System.Drawing.Color.White;
                         _buttonGks3Enabled = false;
                     }
                     else
@@ -181,8 +181,13 @@ namespace InteractiveTable
 
         }
 
+
         #endregion
 
-        
+        private void button_Add_Click(object sender, EventArgs e)
+        {
+            AddAccidentForm newForm = new AddAccidentForm();
+            newForm.Show();
+        }
     }
 }
