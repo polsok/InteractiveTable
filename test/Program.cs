@@ -3,12 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace InteractiveTable
+namespace test
 {
     static class Program
     {
-        public static List<Accident> DataList = new List<Accident>();
-        public static int ID = 0;
         /// <summary>
         /// Главная точка входа для приложения.
         /// </summary>
@@ -18,7 +16,6 @@ namespace InteractiveTable
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Form1());
-
         }
     }
 }

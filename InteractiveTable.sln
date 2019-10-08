@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.28307.852
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InteractiveTable", "InteractiveTable\InteractiveTable.csproj", "{58ED37AD-671E-4E2B-AC8E-7AE4ED8B8528}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "test", "test\test.csproj", "{8E9EAC21-9F0D-4A09-A491-F1C6B260DB61}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{58ED37AD-671E-4E2B-AC8E-7AE4ED8B8528}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{58ED37AD-671E-4E2B-AC8E-7AE4ED8B8528}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{58ED37AD-671E-4E2B-AC8E-7AE4ED8B8528}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8E9EAC21-9F0D-4A09-A491-F1C6B260DB61}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8E9EAC21-9F0D-4A09-A491-F1C6B260DB61}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8E9EAC21-9F0D-4A09-A491-F1C6B260DB61}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8E9EAC21-9F0D-4A09-A491-F1C6B260DB61}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

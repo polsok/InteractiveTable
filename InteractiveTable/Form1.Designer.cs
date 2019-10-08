@@ -40,10 +40,12 @@ namespace InteractiveTable
             this.columnAccident = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnTime = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnAdd = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnRemove = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.button_Add = new System.Windows.Forms.Button();
             this.button_Del = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
+            this.button_everything = new System.Windows.Forms.Button();
+            this.button_Edit = new System.Windows.Forms.Button();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // button_South
@@ -104,8 +106,7 @@ namespace InteractiveTable
             this.columnAdress,
             this.columnAccident,
             this.columnTime,
-            this.columnAdd,
-            this.columnRemove});
+            this.columnAdd});
             this.listView1.FullRowSelect = true;
             this.listView1.GridLines = true;
             this.listView1.HideSelection = false;
@@ -122,7 +123,6 @@ namespace InteractiveTable
             // columnID
             // 
             this.columnID.Text = "ID";
-            this.columnID.Width = 36;
             // 
             // columnAdress
             // 
@@ -144,11 +144,6 @@ namespace InteractiveTable
             this.columnAdd.Text = "Добавил";
             this.columnAdd.Width = 68;
             // 
-            // columnRemove
-            // 
-            this.columnRemove.Text = "Удалил";
-            this.columnRemove.Width = 82;
-            // 
             // button_Add
             // 
             this.button_Add.Location = new System.Drawing.Point(12, 495);
@@ -161,28 +156,50 @@ namespace InteractiveTable
             // 
             // button_Del
             // 
-            this.button_Del.Location = new System.Drawing.Point(141, 495);
+            this.button_Del.Location = new System.Drawing.Point(270, 495);
             this.button_Del.Name = "button_Del";
             this.button_Del.Size = new System.Drawing.Size(123, 31);
             this.button_Del.TabIndex = 6;
             this.button_Del.Text = "Удалить";
             this.button_Del.UseVisualStyleBackColor = true;
             // 
-            // button1
+            // button_everything
             // 
-            this.button1.Location = new System.Drawing.Point(270, 495);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(123, 31);
-            this.button1.TabIndex = 7;
-            this.button1.Text = "Показать все";
-            this.button1.UseVisualStyleBackColor = true;
+            this.button_everything.Location = new System.Drawing.Point(399, 495);
+            this.button_everything.Name = "button_everything";
+            this.button_everything.Size = new System.Drawing.Size(123, 31);
+            this.button_everything.TabIndex = 7;
+            this.button_everything.Text = "Показать все";
+            this.button_everything.UseVisualStyleBackColor = true;
+            this.button_everything.Visible = false;
+            // 
+            // button_Edit
+            // 
+            this.button_Edit.Location = new System.Drawing.Point(141, 495);
+            this.button_Edit.Name = "button_Edit";
+            this.button_Edit.Size = new System.Drawing.Size(123, 31);
+            this.button_Edit.TabIndex = 8;
+            this.button_Edit.Text = "Редактировать";
+            this.button_Edit.UseVisualStyleBackColor = true;
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Image = global::InteractiveTable.Properties.Resources._2;
+            this.pictureBox1.Location = new System.Drawing.Point(400, 478);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(123, 50);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox1.TabIndex = 9;
+            this.pictureBox1.TabStop = false;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(535, 548);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.pictureBox1);
+            this.Controls.Add(this.button_Edit);
+            this.Controls.Add(this.button_everything);
             this.Controls.Add(this.button_Del);
             this.Controls.Add(this.button_Add);
             this.Controls.Add(this.listView1);
@@ -191,27 +208,29 @@ namespace InteractiveTable
             this.Controls.Add(this.button_Nord);
             this.Controls.Add(this.button_South);
             this.Name = "Form1";
+            this.ShowIcon = false;
             this.Text = "Доска аварийных происшествий";
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
 
         }
 
         #endregion
-
-        private System.Windows.Forms.Button button_South;
         private System.Windows.Forms.Button button_Nord;
         private System.Windows.Forms.Button button_Vas;
         private System.Windows.Forms.Button button_GKS3;
-        private System.Windows.Forms.ListView listView1;
         private System.Windows.Forms.ColumnHeader columnAdress;
         private System.Windows.Forms.ColumnHeader columnAccident;
         private System.Windows.Forms.ColumnHeader columnTime;
         private System.Windows.Forms.ColumnHeader columnAdd;
-        private System.Windows.Forms.ColumnHeader columnRemove;
-        private System.Windows.Forms.ColumnHeader columnID;
         private System.Windows.Forms.Button button_Add;
         private System.Windows.Forms.Button button_Del;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button button_everything;
+        private System.Windows.Forms.Button button_Edit;
+        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.ColumnHeader columnID;
+        public System.Windows.Forms.ListView listView1;
+        private System.Windows.Forms.Button button_South;
     }
 }
 
