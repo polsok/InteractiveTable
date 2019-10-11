@@ -11,25 +11,41 @@ using System.Windows.Forms;
 
 namespace test
 {
+    public delegate void UI();
     public partial class Form1 : Form
     {
-        public delegate void MethodContainer();
-        public event MethodContainer onCount;
+        // Объявляем событие
+        //public static event UI UserEvent;
+
+        // Используем метод для запуска события
+        public static void OnUserEvent()
+        {
+            //UserEvent();
+        }
         public Form1()
         {
+            
             InitializeComponent();
+            // Добавляем обработчик события
+            /*UserEvent += UserInfoHandler;
             while (true)
             {
-                string[] data = File.ReadAllLines("test.txt");
-                Thread.Sleep(1000);
-                onCount();
-            }
+            
+            Thread.Sleep(1000);
+                // Запустим событие
+                OnUserEvent();
+            }*/
+            
             
         }
-
-        public void count()
+       /* public void UserInfoHandler()
         {
+            textBox1.Text = File.ReadAllText("test.txt");
+        }*/
 
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            textBox1.Text = File.ReadAllText("test.txt");
         }
     }
 }

@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InteractiveTable", "Interac
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "test", "test\test.csproj", "{8E9EAC21-9F0D-4A09-A491-F1C6B260DB61}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "test2", "test2\test2.csproj", "{0B7EBC84-BA0A-4FD6-9ECB-F3EAE3B34689}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{8E9EAC21-9F0D-4A09-A491-F1C6B260DB61}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8E9EAC21-9F0D-4A09-A491-F1C6B260DB61}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8E9EAC21-9F0D-4A09-A491-F1C6B260DB61}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0B7EBC84-BA0A-4FD6-9ECB-F3EAE3B34689}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0B7EBC84-BA0A-4FD6-9ECB-F3EAE3B34689}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0B7EBC84-BA0A-4FD6-9ECB-F3EAE3B34689}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0B7EBC84-BA0A-4FD6-9ECB-F3EAE3B34689}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
