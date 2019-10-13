@@ -30,21 +30,22 @@ namespace InteractiveTable
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.button_South = new System.Windows.Forms.Button();
             this.button_Nord = new System.Windows.Forms.Button();
             this.button_Vas = new System.Windows.Forms.Button();
             this.button_GKS3 = new System.Windows.Forms.Button();
             this.listView1 = new System.Windows.Forms.ListView();
-            this.columnID = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnAdress = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnAccident = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnTime = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnAdd = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.button_Add = new System.Windows.Forms.Button();
             this.button_Del = new System.Windows.Forms.Button();
-            this.button_everything = new System.Windows.Forms.Button();
             this.button_Edit = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.timerAccident = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -102,7 +103,6 @@ namespace InteractiveTable
             // 
             this.listView1.AllowColumnReorder = true;
             this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnID,
             this.columnAdress,
             this.columnAccident,
             this.columnTime,
@@ -119,10 +119,6 @@ namespace InteractiveTable
             this.listView1.TabIndex = 4;
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.Details;
-            // 
-            // columnID
-            // 
-            this.columnID.Text = "ID";
             // 
             // columnAdress
             // 
@@ -163,16 +159,6 @@ namespace InteractiveTable
             this.button_Del.Text = "Удалить";
             this.button_Del.UseVisualStyleBackColor = true;
             // 
-            // button_everything
-            // 
-            this.button_everything.Location = new System.Drawing.Point(399, 495);
-            this.button_everything.Name = "button_everything";
-            this.button_everything.Size = new System.Drawing.Size(123, 31);
-            this.button_everything.TabIndex = 7;
-            this.button_everything.Text = "Показать все";
-            this.button_everything.UseVisualStyleBackColor = true;
-            this.button_everything.Visible = false;
-            // 
             // button_Edit
             // 
             this.button_Edit.Location = new System.Drawing.Point(141, 495);
@@ -185,12 +171,23 @@ namespace InteractiveTable
             // pictureBox1
             // 
             this.pictureBox1.Image = global::InteractiveTable.Properties.Resources._2;
-            this.pictureBox1.Location = new System.Drawing.Point(400, 478);
+            this.pictureBox1.Location = new System.Drawing.Point(400, 486);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(123, 50);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox1.TabIndex = 9;
             this.pictureBox1.TabStop = false;
+            // 
+            // timer1
+            // 
+            this.timer1.Enabled = true;
+            this.timer1.Interval = 10000;
+            this.timer1.Tick += new System.EventHandler(this.ListViewCompleting);
+            // 
+            // timerAccident
+            // 
+            this.timerAccident.Enabled = true;
+            this.timerAccident.Tick += new System.EventHandler(this.timerAccident_Tick);
             // 
             // Form1
             // 
@@ -199,7 +196,6 @@ namespace InteractiveTable
             this.ClientSize = new System.Drawing.Size(535, 548);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.button_Edit);
-            this.Controls.Add(this.button_everything);
             this.Controls.Add(this.button_Del);
             this.Controls.Add(this.button_Add);
             this.Controls.Add(this.listView1);
@@ -225,12 +221,12 @@ namespace InteractiveTable
         private System.Windows.Forms.ColumnHeader columnAdd;
         private System.Windows.Forms.Button button_Add;
         private System.Windows.Forms.Button button_Del;
-        private System.Windows.Forms.Button button_everything;
         private System.Windows.Forms.Button button_Edit;
         private System.Windows.Forms.PictureBox pictureBox1;
-        private System.Windows.Forms.ColumnHeader columnID;
         public System.Windows.Forms.ListView listView1;
         private System.Windows.Forms.Button button_South;
+        private System.Windows.Forms.Timer timer1;
+        private System.Windows.Forms.Timer timerAccident;
     }
 }
 

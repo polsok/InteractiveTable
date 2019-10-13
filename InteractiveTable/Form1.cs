@@ -22,48 +22,16 @@ namespace InteractiveTable
         
         public Form1()
         {
+            Accident.AccidentList = Accident.LoadFile();
             InitializeComponent();
-
-            #region Загружаем данные раз в 10 секунд
-
-
-                Program.ID = 0;
-                Program.DataList.Clear();
-                string[] ReadFile = DownFile("Data.csv");
-                for (int i = 0; i < ReadFile.Length; i++)
-                {
-                    var t = new List<string>();
-                    var csvSplit = new Regex("((?<=\")[^\"]*(?=\"(,|$)+)|(?<=,|^)[^,\"]*(?=,|$))", RegexOptions.Compiled);
-
-                    foreach (Match match in csvSplit.Matches(ReadFile[i]))
-                        t.Add(match.Value.TrimStart(','));
-                    if (t.Count < 4)
-                        continue;
-                    //обрабатываем данные
-                    Accident data = new Accident();
-                    data.ID = Convert.ToInt32(t[0]);
-                    data.DataTime = t[1];
-                    data.Adress = t[2];
-                    data._Accident = t[3];
-                    data.TimeAccident = t[4];
-                    data.AddDispetcher = t[5];
-                    data.RemoveDispetcher = t[6];
-                    data.District = t[7];
-                    Program.ID = data.ID + 1;
-                    Program.DataList.Add(data);
-                }
-
-            //обработчик события
-
-            #endregion
-
         }
+
         /// <summary>
         /// событие заполнения ListView
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void ListViewCompleting(object sender, EventArgs e)
+        public void ListViewCompleting(object sender, EventArgs e)
         {
             string t = sender.ToString();
             switch (t)
@@ -116,75 +84,59 @@ namespace InteractiveTable
                         _buttonGks3Enabled = true;
                     }
                     break;
+                //Отработка таймера
+                case " [System.Windows.Forms.Timer], Interval: 10000":
+                    List<Accident> tempAccidents = Accident.LoadFile();
+                    if (tempAccidents != Accident.AccidentList)
+                    {
+                        Accident.AccidentList = tempAccidents.GetRange(0, tempAccidents.Count);
+                    }
+                    else
+                        return;
+                    break;
                 default:
                     break;
             }
             listView1.Items.Clear();
+            if(Accident.AccidentList == null)
+                return;
             int k = 0;
-            for (int i = 0; i < Program.DataList.Count; i++)
+            for (int i = 0; i < Accident.AccidentList.Count; i++)
             {
-                if (_buttonGks3Enabled && Program.DataList[i].District == "ЖКС3")
+                if (_buttonGks3Enabled && Accident.AccidentList[i].District == "ЖКС3")
                 {
-                    listView1.Items.Add(Convert.ToString(Program.DataList[i].ID));
-                    listView1.Items[k].SubItems.Add(Program.DataList[i].Adress);
-                    listView1.Items[k].SubItems.Add(Program.DataList[i]._Accident);
-                    listView1.Items[k].SubItems.Add(Program.DataList[i].TimeAccident);
-                    listView1.Items[k].SubItems.Add(Program.DataList[i].AddDispetcher);
+                    listView1.Items.Add(Convert.ToString(Accident.AccidentList[i].Adress));
+                    listView1.Items[k].SubItems.Add(Accident.AccidentList[i]._Accident);
+                    listView1.Items[k].SubItems.Add(Accident.AccidentList[i].TimeAccident);
+                    listView1.Items[k].SubItems.Add(Accident.AccidentList[i].AddDispetcher);
                     k++;
                 }
-                if (_buttonNordEnabled && Program.DataList[i].District == "СЕВЕР")
+                if (_buttonNordEnabled && Accident.AccidentList[i].District == "СЕВЕР")
                 {
-                    listView1.Items.Add(Convert.ToString(Program.DataList[i].ID));
-                    listView1.Items[k].SubItems.Add(Program.DataList[i].Adress);
-                    listView1.Items[k].SubItems.Add(Program.DataList[i]._Accident);
-                    listView1.Items[k].SubItems.Add(Program.DataList[i].TimeAccident);
-                    listView1.Items[k].SubItems.Add(Program.DataList[i].AddDispetcher);
+                    listView1.Items.Add(Convert.ToString(Accident.AccidentList[i].Adress));
+                    listView1.Items[k].SubItems.Add(Accident.AccidentList[i]._Accident);
+                    listView1.Items[k].SubItems.Add(Accident.AccidentList[i].TimeAccident);
+                    listView1.Items[k].SubItems.Add(Accident.AccidentList[i].AddDispetcher);
                     k++;
                 }
-                if (_buttonSouthEnabled && Program.DataList[i].District == "ЮГ")
+                if (_buttonSouthEnabled && Accident.AccidentList[i].District == "ЮГ")
                 {
-                    listView1.Items.Add(Convert.ToString(Program.DataList[i].ID));
-                    listView1.Items[k].SubItems.Add(Program.DataList[i].Adress);
-                    listView1.Items[k].SubItems.Add(Program.DataList[i]._Accident);
-                    listView1.Items[k].SubItems.Add(Program.DataList[i].TimeAccident);
-                    listView1.Items[k].SubItems.Add(Program.DataList[i].AddDispetcher);
+                    listView1.Items.Add(Convert.ToString(Accident.AccidentList[i].Adress));
+                    listView1.Items[k].SubItems.Add(Accident.AccidentList[i]._Accident);
+                    listView1.Items[k].SubItems.Add(Accident.AccidentList[i].TimeAccident);
+                    listView1.Items[k].SubItems.Add(Accident.AccidentList[i].AddDispetcher);
                     k++;
                 }
-                if (_buttonVasEnabled && Program.DataList[i].District == "ЗАО")
+                if (_buttonVasEnabled && Accident.AccidentList[i].District == "ЗАО")
                 {
-                    listView1.Items.Add(Convert.ToString(Program.DataList[i].ID));
-                    listView1.Items[k].SubItems.Add(Program.DataList[i].Adress);
-                    listView1.Items[k].SubItems.Add(Program.DataList[i]._Accident);
-                    listView1.Items[k].SubItems.Add(Program.DataList[i].TimeAccident);
-                    listView1.Items[k].SubItems.Add(Program.DataList[i].AddDispetcher);
+                    listView1.Items.Add(Convert.ToString(Accident.AccidentList[i].Adress));
+                    listView1.Items[k].SubItems.Add(Accident.AccidentList[i]._Accident);
+                    listView1.Items[k].SubItems.Add(Accident.AccidentList[i].TimeAccident);
+                    listView1.Items[k].SubItems.Add(Accident.AccidentList[i].AddDispetcher);
                     k++;
                 }
             }
         }
-    
-        #region загрузка данных из файла открытого в режиме чтения
-
-        /// <summary>
-        /// загрузка данных из файла открытого в режиме чтения
-        /// </summary>
-        internal static string[] DownFile(string path)
-        {
-            FileInfo log = new FileInfo(path);
-            string text;
-            using (var streamReader = new StreamReader(log.Open(FileMode.Open, FileAccess.Read, FileShare.ReadWrite)))
-            {
-                text = streamReader.ReadToEnd();
-            }
-
-            text = text.Replace("\r", "");
-            char[] chars = { '\n' };
-            string[] R = text.Split(chars);
-            return R;
-
-        }
-
-
-        #endregion
 
         private void button_Add_Click(object sender, EventArgs e)
         {
@@ -192,5 +144,12 @@ namespace InteractiveTable
             newForm.Show();
         }
 
+        private void timerAccident_Tick(object sender, EventArgs e)
+        {
+            if (Accident.ObjAccident != null)
+            {
+                ListViewCompleting(Accident.ObjAccident, e);
+            }
+        }
     }
 }

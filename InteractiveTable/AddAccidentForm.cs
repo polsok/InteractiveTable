@@ -15,9 +15,7 @@ namespace InteractiveTable
         public AddAccidentForm()
         {
             InitializeComponent();
-            
         }
-
         private void button_Cancel_Click(object sender, EventArgs e)
         {
             Close();
@@ -50,7 +48,7 @@ namespace InteractiveTable
                 MessageBox.Show("Не указано время");
                 return;
             }
-
+            
             string district = "";
             if (radioButton_ZAO.Checked == true)
                 district = "ЗАО";
@@ -60,11 +58,10 @@ namespace InteractiveTable
                 district = "СЕВЕР";
             if (radioButton_South.Checked == true)
                 district = "ЮГ";
-            string appendLine = "\n"+Program.ID + ",\"" + DateTime.Now.ToString("F") + "\",\"" + textBox_Adress.Text +
-                                "\",\"" + richTextBox1.Text + "\",\"" + textBox_time.Text + "\",\"" +
-                                Environment.UserName + "\",\"" + "\",\"" + district + "\"";
-            File.AppendAllText("Data.csv", appendLine);
+            Accident accident = new Accident(district,textBox_Adress.Text,richTextBox1.Text,textBox_time.Text);
+            Accident.AccidentList.Add(accident);
             Close();
         }
+
     }
 }
