@@ -46,6 +46,7 @@ namespace InteractiveTable
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.timerAccident = new System.Windows.Forms.Timer(this.components);
+            this.listViewAccident = new System.Windows.Forms.ListView();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -119,6 +120,7 @@ namespace InteractiveTable
             this.listView1.TabIndex = 4;
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.Details;
+            this.listView1.SelectedIndexChanged += new System.EventHandler(this.listView1_SelectedIndexChanged);
             // 
             // columnAdress
             // 
@@ -158,6 +160,7 @@ namespace InteractiveTable
             this.button_Del.TabIndex = 6;
             this.button_Del.Text = "Удалить";
             this.button_Del.UseVisualStyleBackColor = true;
+            this.button_Del.Click += new System.EventHandler(this.button_Del_Click);
             // 
             // button_Edit
             // 
@@ -167,6 +170,7 @@ namespace InteractiveTable
             this.button_Edit.TabIndex = 8;
             this.button_Edit.Text = "Редактировать";
             this.button_Edit.UseVisualStyleBackColor = true;
+            this.button_Edit.Click += new System.EventHandler(this.button_Edit_Click);
             // 
             // pictureBox1
             // 
@@ -180,7 +184,6 @@ namespace InteractiveTable
             // 
             // timer1
             // 
-            this.timer1.Enabled = true;
             this.timer1.Interval = 10000;
             this.timer1.Tick += new System.EventHandler(this.ListViewCompleting);
             // 
@@ -189,11 +192,24 @@ namespace InteractiveTable
             this.timerAccident.Enabled = true;
             this.timerAccident.Tick += new System.EventHandler(this.timerAccident_Tick);
             // 
+            // listViewAccident
+            // 
+            this.listViewAccident.FullRowSelect = true;
+            this.listViewAccident.GridLines = true;
+            this.listViewAccident.HideSelection = false;
+            this.listViewAccident.Location = new System.Drawing.Point(529, 98);
+            this.listViewAccident.Name = "listViewAccident";
+            this.listViewAccident.Size = new System.Drawing.Size(510, 374);
+            this.listViewAccident.TabIndex = 10;
+            this.listViewAccident.UseCompatibleStateImageBehavior = false;
+            this.listViewAccident.View = System.Windows.Forms.View.Details;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(535, 548);
+            this.ClientSize = new System.Drawing.Size(1053, 548);
+            this.Controls.Add(this.listViewAccident);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.button_Edit);
             this.Controls.Add(this.button_Del);
@@ -227,6 +243,7 @@ namespace InteractiveTable
         private System.Windows.Forms.Button button_South;
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.Timer timerAccident;
+        private System.Windows.Forms.ListView listViewAccident;
     }
 }
 

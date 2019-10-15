@@ -1,33 +1,33 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 namespace InteractiveTable
 {
-    
+
     /// <summary>
     /// Данные приложения
     /// </summary>
     public class Accident
     {
         /// <summary>
-        /// передача происшествия между формами
+        /// перенос данных между формами
         /// </summary>
-        public static Accident ObjAccident;
+        public static string Transfer;
+        
         /// <summary>
         /// список всех происшествий
         /// </summary>
-        public static List<Accident> AccidentList = new List<Accident>();
+        public static List<Accident> AccidentList;
 
 
         /// <summary>
         /// доступность файла происшествий для чтения
         /// </summary>
         public static bool AccessAccidentFileForRead = true;
+
         /// <summary>
         /// файл происшествий
         /// </summary>
@@ -46,10 +46,11 @@ namespace InteractiveTable
         /// <returns>Список происшествий</returns>
         public static List<Accident> LoadFile()
         {
+            AccidentList = new List<Accident>();
             if (!File.Exists(PathAccident))
             {
                 AccessAccidentFileForRead = false;
-                return null;
+                return AccidentList;
             }
 
             try
@@ -111,14 +112,13 @@ namespace InteractiveTable
         /// <param name="timeAccident">Время происшествия</param>
         public static void AddAccident(string district, string adress, string accident, string timeAccident)
         {
+            Accident ObjAccident = new Accident(district, adress, accident, timeAccident);
             try
-            {
-                Accident ObjAccident = new Accident(district, adress, accident, timeAccident);
-                List<Accident> copyAccidents = AccidentList.GetRange(0, AccidentList.Count);
-                copyAccidents.Add(ObjAccident);
+            {             
+                AccidentList.Add(ObjAccident);
                 if (File.Exists(PathAccident))
                     File.Delete(PathAccident);
-                foreach (var data in copyAccidents)
+                foreach (var data in AccidentList)
                 {
                     string t = "\"" + data.DataTime + "\",";
                     t += "\"" + data.Adress + "\",";
@@ -127,12 +127,12 @@ namespace InteractiveTable
                     t += "\"" + data.AddDispetcher + "\",";
                     t += "\"" + data.District + "\"\n";
                     File.AppendAllText(PathAccident, t);
-                }
-
-                AccidentList.Add(ObjAccident);
+                }              
+                Transfer = "AddAccident=true";
             }
             catch (Exception e)
             {
+                AccidentList.Remove(ObjAccident);
                 File.AppendAllText("Error.txt",
                     DateTime.Now.ToString("F") + ", " + Environment.MachineName + ", " + e.Message);
                 MessageBox.Show("Не удалось записать данные в файл происшествий. Данные изменены не будут.");

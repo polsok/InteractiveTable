@@ -24,8 +24,32 @@ namespace InteractiveTable
         {
             Accident.AccidentList = Accident.LoadFile();
             InitializeComponent();
+            CreateHeadersAndFillListView();
         }
+        private void CreateHeadersAndFillListView()
+        {
+            ColumnHeader colHead;
 
+            colHead = new ColumnHeader();
+            colHead.Width = 122;
+            colHead.Text = "Адрес";
+            listViewAccident.Columns.Add(colHead);
+
+            colHead = new ColumnHeader();
+            colHead.Width = 214;
+            colHead.Text = "Происшествие";
+            listViewAccident.Columns.Add(colHead);
+
+            colHead = new ColumnHeader();
+            colHead.Width = 87;
+            colHead.Text = "Время работ";
+            listViewAccident.Columns.Add(colHead);
+
+            colHead = new ColumnHeader();
+            colHead.Width = 83;
+            colHead.Text = "Добавил";
+            listViewAccident.Columns.Add(colHead);
+        }
         /// <summary>
         /// событие заполнения ListView
         /// </summary>
@@ -33,6 +57,8 @@ namespace InteractiveTable
         /// <param name="e"></param>
         public void ListViewCompleting(object sender, EventArgs e)
         {
+            ListViewItem lvi;
+            ListViewItem.ListViewSubItem lvsi;
             string t = sender.ToString();
             switch (t)
             {
@@ -87,6 +113,8 @@ namespace InteractiveTable
                 //Отработка таймера
                 case " [System.Windows.Forms.Timer], Interval: 10000":
                     List<Accident> tempAccidents = Accident.LoadFile();
+                    if(tempAccidents == null)
+                        return;
                     if (tempAccidents != Accident.AccidentList)
                     {
                         Accident.AccidentList = tempAccidents.GetRange(0, tempAccidents.Count);
@@ -98,8 +126,88 @@ namespace InteractiveTable
                     break;
             }
             listView1.Items.Clear();
+            listViewAccident.Items.Clear();
             if(Accident.AccidentList == null)
                 return;
+            for (int i = 0; i < Accident.AccidentList.Count; i++)
+            {
+                if (_buttonGks3Enabled && Accident.AccidentList[i].District == "ЖКС3")
+                {
+                    lvi = new ListViewItem();
+                    lvi.Text = Accident.AccidentList[i].Adress;
+
+                    lvsi = new ListViewItem.ListViewSubItem();
+                    lvsi.Text = Accident.AccidentList[i]._Accident;
+                    lvi.SubItems.Add(lvsi);
+
+                    lvsi = new ListViewItem.ListViewSubItem();
+                    lvsi.Text = Accident.AccidentList[i].TimeAccident;
+                    lvi.SubItems.Add(lvsi);
+
+                    lvsi = new ListViewItem.ListViewSubItem();
+                    lvsi.Text = Accident.AccidentList[i].AddDispetcher;
+                    lvi.SubItems.Add(lvsi);
+
+                    listViewAccident.Items.Add(lvi);
+                }
+                if (_buttonNordEnabled && Accident.AccidentList[i].District == "СЕВЕР")
+                {
+                    lvi = new ListViewItem();
+                    lvi.Text = Accident.AccidentList[i].Adress;
+
+                    lvsi = new ListViewItem.ListViewSubItem();
+                    lvsi.Text = Accident.AccidentList[i]._Accident;
+                    lvi.SubItems.Add(lvsi);
+
+                    lvsi = new ListViewItem.ListViewSubItem();
+                    lvsi.Text = Accident.AccidentList[i].TimeAccident;
+                    lvi.SubItems.Add(lvsi);
+
+                    lvsi = new ListViewItem.ListViewSubItem();
+                    lvsi.Text = Accident.AccidentList[i].AddDispetcher;
+                    lvi.SubItems.Add(lvsi);
+
+                    listViewAccident.Items.Add(lvi);
+                }
+                if (_buttonSouthEnabled && Accident.AccidentList[i].District == "ЮГ")
+                {
+                    lvi = new ListViewItem();
+                    lvi.Text = Accident.AccidentList[i].Adress;
+
+                    lvsi = new ListViewItem.ListViewSubItem();
+                    lvsi.Text = Accident.AccidentList[i]._Accident;
+                    lvi.SubItems.Add(lvsi);
+
+                    lvsi = new ListViewItem.ListViewSubItem();
+                    lvsi.Text = Accident.AccidentList[i].TimeAccident;
+                    lvi.SubItems.Add(lvsi);
+
+                    lvsi = new ListViewItem.ListViewSubItem();
+                    lvsi.Text = Accident.AccidentList[i].AddDispetcher;
+                    lvi.SubItems.Add(lvsi);
+
+                    listViewAccident.Items.Add(lvi);
+                }
+                if (_buttonVasEnabled && Accident.AccidentList[i].District == "ЗАО")
+                {
+                    lvi = new ListViewItem();
+                    lvi.Text = Accident.AccidentList[i].Adress;
+
+                    lvsi = new ListViewItem.ListViewSubItem();
+                    lvsi.Text = Accident.AccidentList[i]._Accident;
+                    lvi.SubItems.Add(lvsi);
+
+                    lvsi = new ListViewItem.ListViewSubItem();
+                    lvsi.Text = Accident.AccidentList[i].TimeAccident;
+                    lvi.SubItems.Add(lvsi);
+
+                    lvsi = new ListViewItem.ListViewSubItem();
+                    lvsi.Text = Accident.AccidentList[i].AddDispetcher;
+                    lvi.SubItems.Add(lvsi);
+
+                    listViewAccident.Items.Add(lvi);
+                }
+            }
             int k = 0;
             for (int i = 0; i < Accident.AccidentList.Count; i++)
             {
@@ -140,16 +248,34 @@ namespace InteractiveTable
 
         private void button_Add_Click(object sender, EventArgs e)
         {
+            Accident.Transfer = "AddAccident";
+            AddAccidentForm newForm = new AddAccidentForm();
+            newForm.Show();
+        }
+        private void button_Edit_Click(object sender, EventArgs e)
+        {
+            Accident.Transfer = "EditAccident";
             AddAccidentForm newForm = new AddAccidentForm();
             newForm.Show();
         }
 
+        private void button_Del_Click(object sender, EventArgs e)
+        {
+            
+        }
         private void timerAccident_Tick(object sender, EventArgs e)
         {
-            if (Accident.ObjAccident != null)
+            if (Accident.Transfer == "AddAccident=true")
             {
-                ListViewCompleting(Accident.ObjAccident, e);
+                ListViewCompleting(sender, e);
+                Accident.Transfer = "";
             }
+
+        }
+
+        private void listView1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string a = "0";
         }
     }
 }

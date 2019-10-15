@@ -15,12 +15,16 @@ namespace InteractiveTable
         public AddAccidentForm()
         {
             InitializeComponent();
+            if (Accident.Transfer == "EditAccident")
+            {
+
+            }
         }
         private void button_Cancel_Click(object sender, EventArgs e)
         {
             Close();
         }
-
+        
         private void button_Save_Click(object sender, EventArgs e)
         {
             //проверяем что все поля заполнены
@@ -58,8 +62,8 @@ namespace InteractiveTable
                 district = "СЕВЕР";
             if (radioButton_South.Checked == true)
                 district = "ЮГ";
-            Accident accident = new Accident(district,textBox_Adress.Text,richTextBox1.Text,textBox_time.Text);
-            Accident.AccidentList.Add(accident);
+            if (Accident.Transfer == "AddAccident")
+                Accident.AddAccident(district, textBox_Adress.Text, richTextBox1.Text, textBox_time.Text);   
             Close();
         }
 
