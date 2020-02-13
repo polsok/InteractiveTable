@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Runtime.Remoting.Messaging;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -12,23 +13,29 @@ using System.Windows.Forms;
 
 namespace InteractiveTable
 {
-    
     public partial class Form1 : Form
     {
+        private static MyException myException;
         static bool _buttonSouthEnabled = false;
         static bool _buttonNordEnabled = false;
         static bool _buttonVasEnabled = false;
-        static bool _buttonGks3Enabled = false;       
-        
+        static bool _buttonGks3Enabled = false;
+        public static string Button = "";
+
         public Form1()
         {
-            Accident.AccidentList = Accident.LoadFile();
             InitializeComponent();
             CreateHeadersAndFillListView();
+            //Accident.Transfer = true;
         }
         private void CreateHeadersAndFillListView()
         {
             ColumnHeader colHead;
+
+            colHead = new ColumnHeader();
+            colHead.Width = 0;
+            colHead.Text = "TimeCreate";
+            listViewAccident.Columns.Add(colHead);
 
             colHead = new ColumnHeader();
             colHead.Width = 122;
@@ -57,225 +64,209 @@ namespace InteractiveTable
         /// <param name="e"></param>
         public void ListViewCompleting(object sender, EventArgs e)
         {
-            ListViewItem lvi;
-            ListViewItem.ListViewSubItem lvsi;
-            string t = sender.ToString();
-            switch (t)
+            try
             {
-                case "System.Windows.Forms.Button, Text: ЮГ":
-                    if (_buttonSouthEnabled)
-                    {
-                        button_South.BackColor = System.Drawing.Color.White;
-                        _buttonSouthEnabled = false;
-                    }
-                    else
-                    {
-                        button_South.BackColor = System.Drawing.Color.Red;
-                        _buttonSouthEnabled = true;
-                    }
-                    break;
-                case "System.Windows.Forms.Button, Text: СЕВЕР":
-                    if (_buttonNordEnabled)
-                    {
-                        button_Nord.BackColor = System.Drawing.Color.White;
-                        _buttonNordEnabled = false;
-                    }
-                    else
-                    {
-                        button_Nord.BackColor = System.Drawing.Color.Aqua;
-                        _buttonNordEnabled = true;
-                    }
-                    break;
-                case "System.Windows.Forms.Button, Text: ЗАО":
-                    if (_buttonVasEnabled)
-                    {
-                        button_Vas.BackColor = System.Drawing.Color.White;
-                        _buttonVasEnabled = false;
-                    }
-                    else
-                    {
-                        button_Vas.BackColor = System.Drawing.Color.Green;
-                        _buttonVasEnabled = true;
-                    }
-                    break;
-                case "System.Windows.Forms.Button, Text: ЖКС3":
+                ListViewItem lvi;
+                ListViewItem.ListViewSubItem lvsi;
+                string t = sender.ToString();
+                switch (t)
+                {
+                    case "System.Windows.Forms.Button, Text: ЮГ":
+                        if (_buttonSouthEnabled)
+                        {
+                            button_South.BackColor = System.Drawing.Color.White;
+                            _buttonSouthEnabled = false;
+                        }
+                        else
+                        {
+                            button_South.BackColor = System.Drawing.Color.Red;
+                            _buttonSouthEnabled = true;
+                        }
+                        break;
+                    case "System.Windows.Forms.Button, Text: СЕВЕР":
+                        if (_buttonNordEnabled)
+                        {
+                            button_Nord.BackColor = System.Drawing.Color.White;
+                            _buttonNordEnabled = false;
+                        }
+                        else
+                        {
+                            button_Nord.BackColor = System.Drawing.Color.Aqua;
+                            _buttonNordEnabled = true;
+                        }
+                        break;
+                    case "System.Windows.Forms.Button, Text: ЗАО":
+                        if (_buttonVasEnabled)
+                        {
+                            button_Vas.BackColor = System.Drawing.Color.White;
+                            _buttonVasEnabled = false;
+                        }
+                        else
+                        {
+                            button_Vas.BackColor = System.Drawing.Color.Green;
+                            _buttonVasEnabled = true;
+                        }
+                        break;
+                    case "System.Windows.Forms.Button, Text: ЖКС3":
+                        if (_buttonGks3Enabled)
+                        {
+                            button_GKS3.BackColor = System.Drawing.Color.White;
+                            _buttonGks3Enabled = false;
+                        }
+                        else
+                        {
+                            button_GKS3.BackColor = System.Drawing.Color.Yellow;
+                            _buttonGks3Enabled = true;
+                        }
+                        break;
+                    default:
+                        break;
+                }
+                listViewAccident.Items.Clear();
+                if (AccidentObj.AccidentList == null)
+                    return;
+                using (AccidentContext db = new AccidentContext())
+                {
+                    List<string> districtList = new List<string>();
                     if (_buttonGks3Enabled)
+                        districtList.Add("ЖКС3");
+                    if (_buttonNordEnabled)
+                        districtList.Add("СЕВЕР");
+                    if (_buttonSouthEnabled)
+                        districtList.Add("ЮГ");
+                    if (_buttonVasEnabled)
+                        districtList.Add("ЗАО");
+                    var accidents = AccidentObj.AccidentList.Where(p => districtList.Contains(p.District));
+                    for (int i = 0; i < accidents.Count(); i++)
                     {
-                        button_GKS3.BackColor = System.Drawing.Color.White;
-                        _buttonGks3Enabled = false;
+                        lvi = new ListViewItem();
+                        lvi.Text = accidents.ElementAt(i).DataTime;
+
+                        lvsi = new ListViewItem.ListViewSubItem();
+                        lvsi.Text = accidents.ElementAt(i).Adress;
+                        lvi.SubItems.Add(lvsi);
+
+                        lvsi = new ListViewItem.ListViewSubItem();
+                        lvsi.Text = accidents.ElementAt(i).Accident;
+                        lvi.SubItems.Add(lvsi);
+
+                        lvsi = new ListViewItem.ListViewSubItem();
+                        lvsi.Text = accidents.ElementAt(i).TimeAccident;
+                        lvi.SubItems.Add(lvsi);
+
+                        lvsi = new ListViewItem.ListViewSubItem();
+                        lvsi.Text = accidents.ElementAt(i).AddDispetcher;
+                        lvi.SubItems.Add(lvsi);
+
+                        listViewAccident.Items.Add(lvi);
                     }
-                    else
-                    {
-                        button_GKS3.BackColor = System.Drawing.Color.Yellow;
-                        _buttonGks3Enabled = true;
-                    }
-                    break;
-                //Отработка таймера
-                case " [System.Windows.Forms.Timer], Interval: 10000":
-                    List<Accident> tempAccidents = Accident.LoadFile();
-                    if(tempAccidents == null)
-                        return;
-                    if (tempAccidents != Accident.AccidentList)
-                    {
-                        Accident.AccidentList = tempAccidents.GetRange(0, tempAccidents.Count);
-                    }
-                    else
-                        return;
-                    break;
-                default:
-                    break;
+                }
             }
-            listView1.Items.Clear();
-            listViewAccident.Items.Clear();
-            if(Accident.AccidentList == null)
-                return;
-            for (int i = 0; i < Accident.AccidentList.Count; i++)
+            catch (Exception e1)
             {
-                if (_buttonGks3Enabled && Accident.AccidentList[i].District == "ЖКС3")
-                {
-                    lvi = new ListViewItem();
-                    lvi.Text = Accident.AccidentList[i].Adress;
+                myException = new MyException(e1);
 
-                    lvsi = new ListViewItem.ListViewSubItem();
-                    lvsi.Text = Accident.AccidentList[i]._Accident;
-                    lvi.SubItems.Add(lvsi);
-
-                    lvsi = new ListViewItem.ListViewSubItem();
-                    lvsi.Text = Accident.AccidentList[i].TimeAccident;
-                    lvi.SubItems.Add(lvsi);
-
-                    lvsi = new ListViewItem.ListViewSubItem();
-                    lvsi.Text = Accident.AccidentList[i].AddDispetcher;
-                    lvi.SubItems.Add(lvsi);
-
-                    listViewAccident.Items.Add(lvi);
-                }
-                if (_buttonNordEnabled && Accident.AccidentList[i].District == "СЕВЕР")
-                {
-                    lvi = new ListViewItem();
-                    lvi.Text = Accident.AccidentList[i].Adress;
-
-                    lvsi = new ListViewItem.ListViewSubItem();
-                    lvsi.Text = Accident.AccidentList[i]._Accident;
-                    lvi.SubItems.Add(lvsi);
-
-                    lvsi = new ListViewItem.ListViewSubItem();
-                    lvsi.Text = Accident.AccidentList[i].TimeAccident;
-                    lvi.SubItems.Add(lvsi);
-
-                    lvsi = new ListViewItem.ListViewSubItem();
-                    lvsi.Text = Accident.AccidentList[i].AddDispetcher;
-                    lvi.SubItems.Add(lvsi);
-
-                    listViewAccident.Items.Add(lvi);
-                }
-                if (_buttonSouthEnabled && Accident.AccidentList[i].District == "ЮГ")
-                {
-                    lvi = new ListViewItem();
-                    lvi.Text = Accident.AccidentList[i].Adress;
-
-                    lvsi = new ListViewItem.ListViewSubItem();
-                    lvsi.Text = Accident.AccidentList[i]._Accident;
-                    lvi.SubItems.Add(lvsi);
-
-                    lvsi = new ListViewItem.ListViewSubItem();
-                    lvsi.Text = Accident.AccidentList[i].TimeAccident;
-                    lvi.SubItems.Add(lvsi);
-
-                    lvsi = new ListViewItem.ListViewSubItem();
-                    lvsi.Text = Accident.AccidentList[i].AddDispetcher;
-                    lvi.SubItems.Add(lvsi);
-
-                    listViewAccident.Items.Add(lvi);
-                }
-                if (_buttonVasEnabled && Accident.AccidentList[i].District == "ЗАО")
-                {
-                    lvi = new ListViewItem();
-                    lvi.Text = Accident.AccidentList[i].Adress;
-
-                    lvsi = new ListViewItem.ListViewSubItem();
-                    lvsi.Text = Accident.AccidentList[i]._Accident;
-                    lvi.SubItems.Add(lvsi);
-
-                    lvsi = new ListViewItem.ListViewSubItem();
-                    lvsi.Text = Accident.AccidentList[i].TimeAccident;
-                    lvi.SubItems.Add(lvsi);
-
-                    lvsi = new ListViewItem.ListViewSubItem();
-                    lvsi.Text = Accident.AccidentList[i].AddDispetcher;
-                    lvi.SubItems.Add(lvsi);
-
-                    listViewAccident.Items.Add(lvi);
-                }
             }
-            int k = 0;
-            for (int i = 0; i < Accident.AccidentList.Count; i++)
-            {
-                if (_buttonGks3Enabled && Accident.AccidentList[i].District == "ЖКС3")
-                {
-                    listView1.Items.Add(Convert.ToString(Accident.AccidentList[i].Adress));
-                    listView1.Items[k].SubItems.Add(Accident.AccidentList[i]._Accident);
-                    listView1.Items[k].SubItems.Add(Accident.AccidentList[i].TimeAccident);
-                    listView1.Items[k].SubItems.Add(Accident.AccidentList[i].AddDispetcher);
-                    k++;
-                }
-                if (_buttonNordEnabled && Accident.AccidentList[i].District == "СЕВЕР")
-                {
-                    listView1.Items.Add(Convert.ToString(Accident.AccidentList[i].Adress));
-                    listView1.Items[k].SubItems.Add(Accident.AccidentList[i]._Accident);
-                    listView1.Items[k].SubItems.Add(Accident.AccidentList[i].TimeAccident);
-                    listView1.Items[k].SubItems.Add(Accident.AccidentList[i].AddDispetcher);
-                    k++;
-                }
-                if (_buttonSouthEnabled && Accident.AccidentList[i].District == "ЮГ")
-                {
-                    listView1.Items.Add(Convert.ToString(Accident.AccidentList[i].Adress));
-                    listView1.Items[k].SubItems.Add(Accident.AccidentList[i]._Accident);
-                    listView1.Items[k].SubItems.Add(Accident.AccidentList[i].TimeAccident);
-                    listView1.Items[k].SubItems.Add(Accident.AccidentList[i].AddDispetcher);
-                    k++;
-                }
-                if (_buttonVasEnabled && Accident.AccidentList[i].District == "ЗАО")
-                {
-                    listView1.Items.Add(Convert.ToString(Accident.AccidentList[i].Adress));
-                    listView1.Items[k].SubItems.Add(Accident.AccidentList[i]._Accident);
-                    listView1.Items[k].SubItems.Add(Accident.AccidentList[i].TimeAccident);
-                    listView1.Items[k].SubItems.Add(Accident.AccidentList[i].AddDispetcher);
-                    k++;
-                }
-            }
+                 
         }
 
         private void button_Add_Click(object sender, EventArgs e)
         {
-            Accident.Transfer = "AddAccident";
+            Button = "Add";
             AddAccidentForm newForm = new AddAccidentForm();
             newForm.Show();
         }
         private void button_Edit_Click(object sender, EventArgs e)
         {
-            Accident.Transfer = "EditAccident";
-            AddAccidentForm newForm = new AddAccidentForm();
-            newForm.Show();
+            try
+            {
+                string selected = "";
+                foreach (ListViewItem item in listViewAccident.SelectedItems)
+                {
+                    selected = item.Text;
+                }
+
+                if (selected == "")
+                {
+                    MessageBox.Show("Выберете что изменять");
+                    return;
+                }
+                //находим по времени происшествие
+                foreach (var var in AccidentObj.AccidentList)
+                    if (var.DataTime == selected)
+                        AccidentObj.ObjAccident = var;
+                Button = "Edit";
+                AddAccidentForm newForm = new AddAccidentForm();
+                newForm.Show();
+            }
+            catch (Exception e1)
+            {
+                myException = new MyException(e1);
+
+            }
         }
 
         private void button_Del_Click(object sender, EventArgs e)
         {
-            
-        }
-        private void timerAccident_Tick(object sender, EventArgs e)
-        {
-            if (Accident.Transfer == "AddAccident=true")
+            try
             {
-                ListViewCompleting(sender, e);
-                Accident.Transfer = "";
+                string selected = "";
+                foreach (ListViewItem item in listViewAccident.SelectedItems)
+                {
+                    selected = item.Text;
+                }
+
+                if (selected == "")
+                {
+                    MessageBox.Show("Выберете что удалять");
+                    return;
+                }
+                //находим по времени происшествие
+                AccidentObj obj = new AccidentObj();
+                foreach (var var in AccidentObj.AccidentList)
+                    if (var.DataTime == selected)
+                        obj = var;
+                AccidentObj.DeleteAccident(obj);
+            }
+            catch (Exception e1)
+            {
+                myException = new MyException(e1);
             }
 
         }
 
-        private void listView1_SelectedIndexChanged(object sender, EventArgs e)
+        public void timer1_Tick(object sender, EventArgs e)
         {
-            string a = "0";
+            try
+            {
+                timer1.Interval = 10000;
+                List<AccidentObj> AccidentList = new List<AccidentObj>();
+                using (AccidentContext db = new AccidentContext())
+                {
+                    var kinds = new[] {"Удален", "Изменен"};
+                    var accidents = db.Accidents.Where(p => !kinds.Contains(p.Kind));
+                    foreach (var VARIABLE in accidents)
+                    {
+                        AccidentList.Add(VARIABLE);
+                    }
+                }               
+                if (!AccidentObj.GetHash(AccidentList, AccidentObj.AccidentList))
+                {
+                    AccidentObj.AccidentList = AccidentList.GetRange(0, AccidentList.Count);
+                    ListViewCompleting(sender, e);
+                }
+            }
+            catch (Exception e1)
+            {
+                myException = new MyException(e1);
+            }
+            
+        }
+
+        private void buttonStory_Click(object sender, EventArgs e)
+        {
+            StoryForm storyForm = new StoryForm();
+            storyForm.Show();
         }
     }
 }

@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Windows.Forms;
 
@@ -15,9 +16,30 @@ namespace InteractiveTable
         public AddAccidentForm()
         {
             InitializeComponent();
-            if (Accident.Transfer == "EditAccident")
-            {
+            
+            if (Form1.Button == "Edit")
+            {              
+                switch (AccidentObj.ObjAccident.District)
+                {
+                    case "ЗАО":
+                        radioButton_ZAO.Checked = true;
+                        break;
+                    case "ЖКС3":
+                        radioButton_GKS3.Checked = true;
+                        break;
+                    case "СЕВЕР":
+                        radioButton_North.Checked = true;
+                        break;
+                    case "ЮГ":
+                        radioButton_South.Checked = true;
+                        break;
+                    default:
+                        break;
+                }
 
+                textBox_Adress.Text = AccidentObj.ObjAccident.Adress;
+                richTextBox1.Text = AccidentObj.ObjAccident.Accident;
+                textBox_time.Text = AccidentObj.ObjAccident.TimeAccident;
             }
         }
         private void button_Cancel_Click(object sender, EventArgs e)
@@ -62,8 +84,11 @@ namespace InteractiveTable
                 district = "СЕВЕР";
             if (radioButton_South.Checked == true)
                 district = "ЮГ";
-            if (Accident.Transfer == "AddAccident")
-                Accident.AddAccident(district, textBox_Adress.Text, richTextBox1.Text, textBox_time.Text);   
+            
+            if (Form1.Button == "Add")
+                AccidentObj.AddAccident(new AccidentObj(district, textBox_Adress.Text, richTextBox1.Text, textBox_time.Text));
+            if (Form1.Button == "Edit")
+                AccidentObj.ChangeAccident(AccidentObj.ObjAccident,new AccidentObj(district, textBox_Adress.Text, richTextBox1.Text, textBox_time.Text));
             Close();
         }
 

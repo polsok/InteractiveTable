@@ -13,9 +13,12 @@ namespace InteractiveTable
         [STAThread]
         static void Main()
         {
+            //AccidentObj.CreateTable();
+            //AccidentObj.UploadTable("Accident1.csv");
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Form1());
+            
 
         }
     }

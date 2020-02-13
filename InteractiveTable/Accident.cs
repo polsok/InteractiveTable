@@ -1,104 +1,92 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity.Migrations.Model;
 using System.IO;
+using System.Linq;
+using System.Security.Cryptography;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 namespace InteractiveTable
 {
-
+    
     /// <summary>
     /// Данные приложения
     /// </summary>
-    public class Accident
+    public class AccidentObj
     {
+        private static MyException myException;
         /// <summary>
         /// перенос данных между формами
         /// </summary>
-        public static string Transfer;
-        
+        public static bool Transfer;
+        /// <summary>
+        /// перенос объекта происшествия между формами
+        /// </summary>
+        public static AccidentObj ObjAccident = new AccidentObj();
         /// <summary>
         /// список всех происшествий
         /// </summary>
-        public static List<Accident> AccidentList;
+        public static List<AccidentObj> AccidentList = new List<AccidentObj>();
 
-
+        #region создание таблицы
         /// <summary>
-        /// доступность файла происшествий для чтения
+        /// создание таблицы
         /// </summary>
-        public static bool AccessAccidentFileForRead = true;
-
-        /// <summary>
-        /// файл происшествий
-        /// </summary>
-        private static string PathAccident = "Accident.csv";
-
-        /// <summary>
-        /// файл удаленных происшествий
-        /// </summary>
-        private static string PathAccidentRemove = "AccidentRemove.csv";
-
-        #region Загрузка файла с данными
-
-        /// <summary>
-        /// Загрузка файла с данными
-        /// </summary>
-        /// <returns>Список происшествий</returns>
-        public static List<Accident> LoadFile()
+        public static void CreateTable()
         {
-            AccidentList = new List<Accident>();
-            if (!File.Exists(PathAccident))
-            {
-                AccessAccidentFileForRead = false;
-                return AccidentList;
-            }
-
             try
             {
-                FileInfo log = new FileInfo(PathAccident);
-                string text;
-                using (var streamReader =
-                    new StreamReader(log.Open(FileMode.Open, FileAccess.Read, FileShare.ReadWrite)))
+                using (AccidentContext db = new AccidentContext())
                 {
-                    text = streamReader.ReadToEnd();
+                    AccidentObj accident = new AccidentObj("", "", "", "");
+                    db.Accidents.Add(accident);
+                    db.SaveChanges();
                 }
-
-                text = text.Replace("\r", "");
-                char[] chars = {'\n'};
-                string[] R = text.Split(chars);
-                for (int i = 0; i < R.Length; i++)
-                {
-                    var t = new List<string>();
-                    var csvSplit = new Regex("((?<=\")[^\"]*(?=\"(,|$)+)|(?<=,|^)[^,\"]*(?=,|$))",
-                        RegexOptions.Compiled);
-
-                    foreach (Match match in csvSplit.Matches(R[i]))
-                        t.Add(match.Value.TrimStart(','));
-                    if (t.Count < 6)
-                        continue;
-                    //обрабатываем данные
-                    Accident data = new Accident();
-                    data.DataTime = t[0];
-                    data.Adress = t[1];
-                    data._Accident = t[2];
-                    data.TimeAccident = t[3];
-                    data.AddDispetcher = t[4];
-                    data.District = t[5];
-                    AccidentList.Add(data);
-                }
-
-                return AccidentList;
             }
             catch (Exception e)
             {
-                File.AppendAllText("Error.txt",
-                    DateTime.Now.ToString("F") + ", " + Environment.MachineName + ", " + e.Message);
-                MessageBox.Show("Проблема с загрузкой файла происшествий");
-                return null;
+                 myException = new MyException(e);
             }
-
         }
+        #endregion
 
+        #region Загрузка данных из файла
+
+        public static void UploadTable(string path)
+        {
+            try
+            {
+                string[] Load = File.ReadAllLines(path);
+                using (AccidentContext db = new AccidentContext())
+                {
+                    foreach (var VARIABLE in Load)
+                    {
+                        try
+                        {
+                            string[] Loads = VARIABLE.Split(new char[] { ';' });
+                            AccidentObj accident = new AccidentObj();
+                            accident.DataTime = Loads[1];
+                            accident.Adress = Loads[2];
+                            accident.Accident = Loads[3];
+                            accident.TimeAccident = Loads[4];
+                            accident.AddDispetcher = Loads[5];
+                            accident.RemoveDispetcher = Loads[6];
+                            accident.Computer = Loads[7];
+                            accident.District = Loads[8];
+                            accident.Kind = Loads[9];
+                            db.Accidents.Add(accident);
+                        }
+                        catch{}
+                    }
+                    db.SaveChanges();
+                }
+            }
+            catch (Exception e)
+            {
+                myException = new MyException(e);
+            }
+        }
         #endregion
 
         #region Добавление происшествия
@@ -110,32 +98,20 @@ namespace InteractiveTable
         /// <param name="adress">Адрес</param>
         /// <param name="accident">Происшествие</param>
         /// <param name="timeAccident">Время происшествия</param>
-        public static void AddAccident(string district, string adress, string accident, string timeAccident)
+        public static void AddAccident(AccidentObj accident)
         {
-            Accident ObjAccident = new Accident(district, adress, accident, timeAccident);
             try
-            {             
-                AccidentList.Add(ObjAccident);
-                if (File.Exists(PathAccident))
-                    File.Delete(PathAccident);
-                foreach (var data in AccidentList)
+            {
+                using (AccidentContext db = new AccidentContext())
                 {
-                    string t = "\"" + data.DataTime + "\",";
-                    t += "\"" + data.Adress + "\",";
-                    t += "\"" + data._Accident + "\",";
-                    t += "\"" + data.TimeAccident + "\",";
-                    t += "\"" + data.AddDispetcher + "\",";
-                    t += "\"" + data.District + "\"\n";
-                    File.AppendAllText(PathAccident, t);
-                }              
-                Transfer = "AddAccident=true";
+                    db.Accidents.Add(accident);
+                    db.SaveChanges();
+                }
+
             }
             catch (Exception e)
             {
-                AccidentList.Remove(ObjAccident);
-                File.AppendAllText("Error.txt",
-                    DateTime.Now.ToString("F") + ", " + Environment.MachineName + ", " + e.Message);
-                MessageBox.Show("Не удалось записать данные в файл происшествий. Данные изменены не будут.");
+                myException = new MyException(e);
             }
         }
 
@@ -147,162 +123,106 @@ namespace InteractiveTable
         /// Удаление происшествия
         /// </summary>
         /// <param name="objAccident"></param>
-        public static void DeleteAccident(Accident objAccident)
+        public static void DeleteAccident(AccidentObj accident)
         {
-            List<Accident> copyAccidents;
-            //запись в файл происшествий
             try
             {
-                copyAccidents = AccidentList.GetRange(0, AccidentList.Count);
-                for (int i = 0; i < copyAccidents.Count; i++)
+                using (AccidentContext db = new AccidentContext())
                 {
-                    if (objAccident == copyAccidents[i])
-                    {
-                        copyAccidents.RemoveAt(i);
-                        break;
-                    }
+                    var accidents = db.Accidents.Where(p => p.DataTime == accident.DataTime);
+                    accidents.FirstOrDefault().Kind = "Удален";
+                    accidents.FirstOrDefault().RemoveDispetcher = Environment.UserName;
+                    db.SaveChanges();
                 }
-
-                if (File.Exists(PathAccident))
-                    File.Delete(PathAccident);
-                foreach (var data in copyAccidents)
-                {
-                    string t = "\"" + data.DataTime + "\",";
-                    t += "\"" + data.Adress + "\",";
-                    t += "\"" + data._Accident + "\",";
-                    t += "\"" + data.TimeAccident + "\",";
-                    t += "\"" + data.AddDispetcher + "\",";
-                    t += "\"" + data.District + "\"\n";
-                    File.AppendAllText(PathAccident, t);
-                }
-            }
-            catch (Exception e)
-            {
-                File.AppendAllText("Error.txt",
-                    DateTime.Now.ToString("F") + ", " + Environment.MachineName + ", " + e.Message);
-                MessageBox.Show("Не удалось записать данные в файл происшествий. Данные изменены не будут.");
-                return;
-            }
-
-            //запись в файл удаленных происшествий
-            try
-            {
-                string t = "\"" + objAccident.DataTime + "\",";
-                t += "\"" + objAccident.Adress + "\",";
-                t += "\"" + objAccident._Accident + "\",";
-                t += "\"" + objAccident.TimeAccident + "\",";
-                t += "\"" + objAccident.AddDispetcher + "\",";
-                t += "\"" + objAccident.District + "\",";
-                t += "\"" + objAccident.RemoveDispetcher + "\"\n";
-                File.AppendAllText(PathAccidentRemove, t);
 
             }
             catch (Exception e)
             {
-                File.AppendAllText("Error.txt",
-                    DateTime.Now.ToString("F") + ", " + Environment.MachineName + ", " + e.Message);
-                MessageBox.Show("Не удалось записать данные в файл удаленных происшествий. Данные изменены не будут.");
-                return;
+                myException = new MyException(e);
             }
-
-            AccidentList = copyAccidents.GetRange(0, copyAccidents.Count);
+            Transfer = true;
         }
 
         #endregion
 
         #region Изменения происшествия
 
-        public static void ChangeAccident(Accident oldAccident, Accident newAccident)
+        public static void ChangeAccident(AccidentObj oldAccident, AccidentObj newAccident)
         {
-            List<Accident> copyAccidents;
             try
             {
-                copyAccidents = AccidentList.GetRange(0, AccidentList.Count);
-                for (int i = 0; i < copyAccidents.Count; i++)
+                using (AccidentContext db = new AccidentContext())
                 {
-                    if (oldAccident == copyAccidents[i])
-                    {
-                        copyAccidents.RemoveAt(i);
-                        break;
-                    }
-                }
-
-                copyAccidents.Add(newAccident);
-                if (File.Exists(PathAccident))
-                    File.Delete(PathAccident);
-                foreach (var data in copyAccidents)
-                {
-                    string t = "\"" + data.DataTime + "\",";
-                    t += "\"" + data.Adress + "\",";
-                    t += "\"" + data._Accident + "\",";
-                    t += "\"" + data.TimeAccident + "\",";
-                    t += "\"" + data.AddDispetcher + "\",";
-                    t += "\"" + data.District + "\"\n";
-                    File.AppendAllText(PathAccident, t);
+                    var accidents = db.Accidents.Where(p => p.DataTime == oldAccident.DataTime);
+                    accidents.FirstOrDefault().Kind = "Изменен";
+                    accidents.FirstOrDefault().RemoveDispetcher = Environment.UserName;
+                    db.Accidents.Add(newAccident);
+                    db.SaveChanges();
                 }
             }
             catch (Exception e)
             {
-                File.AppendAllText("Error.txt",
-                    DateTime.Now.ToString("F") + ", " + Environment.MachineName + ", " + e.Message);
-                MessageBox.Show("Не удалось записать данные в файл происшествий. Данные изменены не будут.");
-                return;
+                myException = new MyException(e);
             }
-
-            //запись в файл удаленных происшествий
-            try
-            {
-                string t = "\"" + oldAccident.DataTime + "\",";
-                t += "\"" + oldAccident.Adress + "\",";
-                t += "\"" + oldAccident._Accident + "\",";
-                t += "\"" + oldAccident.TimeAccident + "\",";
-                t += "\"" + oldAccident.AddDispetcher + "\",";
-                t += "\"" + oldAccident.District + "\",";
-                t += "\"Change\"\n";
-                File.AppendAllText(PathAccidentRemove, t);
-
-            }
-            catch (Exception e)
-            {
-                File.AppendAllText("Error.txt",
-                    DateTime.Now.ToString("F") + ", " + Environment.MachineName + ", " + e.Message);
-                MessageBox.Show("Не удалось записать данные в файл удаленных происшествий. Данные изменены не будут.");
-                return;
-            }
-
-            AccidentList = copyAccidents.GetRange(0, copyAccidents.Count);
+            Transfer = true;
+            //AccidentList = copyAccidents.GetRange(0, copyAccidents.Count);
         }
 
         #endregion
 
-        Accident()
+        #region Сравнение двух списков
+
+        internal static bool GetHash(List<AccidentObj> AccidentList1, List<AccidentObj> AccidentList2)
+        {
+            try
+            {
+                List<int> AccidentHash1 = new List<int>();
+                List<int> AccidentHash2 = new List<int>();
+                foreach (var VARIABLE in AccidentList1)
+                    AccidentHash1.Add((VARIABLE.DataTime + VARIABLE.Kind).GetHashCode());
+                foreach (var VARIABLE in AccidentList2)
+                    AccidentHash2.Add((VARIABLE.DataTime + VARIABLE.Kind).GetHashCode());
+                return AccidentHash1.SequenceEqual(AccidentHash2);
+            }
+            catch (Exception e)
+            {
+                myException = new MyException(e);
+                return false;
+            }
+        }
+
+        #endregion
+
+        public AccidentObj()
         {
         }
 
-        public Accident(string district, string adress, string accident, string timeAccident)
+        public AccidentObj(string district, string adress, string accident, string timeAccident)
         {
             DataTime = DateTime.Now.ToString("O");
             District = district;
-            _Accident = accident;
+            Accident = accident;
             Adress = adress;
             TimeAccident = timeAccident;
             AddDispetcher = Environment.UserName;
+            Computer = Environment.MachineName;
+            Kind = "Создан";
         }
-
+        public int Id { get; set; }
         /// <summary>
         /// время и дата создания заявки
         /// </summary>
-        public string DataTime { get; set; }
-
-        /// <summary>
-        /// Происшествие
-        /// </summary>
-        public string _Accident { get; set; }
+        public string DataTime { get; set; }       
 
         /// <summary>
         /// адрес происшествия
         /// </summary>
         public string Adress { get; set; }
+
+        /// <summary>
+        /// Происшествие
+        /// </summary>
+        public string Accident { get; set; }
 
         /// <summary>
         /// время происшествия
@@ -320,9 +240,18 @@ namespace InteractiveTable
         public string RemoveDispetcher { get; set; }
 
         /// <summary>
+        /// компьютер с которого сделано изменение
+        /// </summary>
+        public string Computer { get; set; }
+
+        /// <summary>
         /// Район
         /// </summary>
         public string District { get; set; }
+        /// <summary>
+        /// тип резервации
+        /// </summary>
+        public string Kind { get; set; }
     }
 }
 
