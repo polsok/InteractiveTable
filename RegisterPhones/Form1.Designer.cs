@@ -1,6 +1,6 @@
 ﻿using System.Security.Cryptography.X509Certificates;
 
-namespace InteractiveTable
+namespace RegisterPhones
 {
     partial class Form1
     {

@@ -11,7 +11,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Forms;
 
-namespace InteractiveTable
+namespace RegisterPhones
 {
     public partial class Form1 : Form
     {
@@ -168,7 +168,7 @@ namespace InteractiveTable
                         break;
                 }
                 listViewAccident.Items.Clear();
-                if (AccidentObj.AccidentList == null)
+                if (PhoneObj.AccidentList == null)
                     return;
                 using (AccidentContext db = new AccidentContext())
                 {
@@ -181,7 +181,7 @@ namespace InteractiveTable
                         districtList.Add("ЮГ");
                     if (_buttonVasEnabled)
                         districtList.Add("ЗАО");
-                    var accidents = AccidentObj.AccidentList.Where(p => districtList.Contains(p.District));
+                    var accidents = PhoneObj.AccidentList.Where(p => districtList.Contains(p.District));
                     for (int i = 0; i < accidents.Count(); i++)
                     {
                         lvi = new ListViewItem();
@@ -190,7 +190,7 @@ namespace InteractiveTable
 
                         lvsi = new ListViewItem.ListViewSubItem();
                         ChangeFont(lvi);
-                        lvsi.Text = accidents.ElementAt(i).Adress;
+                        lvsi.Text = accidents.ElementAt(i).Street;
                         lvi.SubItems.Add(lvsi);
 
                         lvsi = new ListViewItem.ListViewSubItem();
@@ -200,7 +200,7 @@ namespace InteractiveTable
 
                         lvsi = new ListViewItem.ListViewSubItem();
                         ChangeFont(lvi);
-                        lvsi.Text = accidents.ElementAt(i).TimeAccident;
+                        lvsi.Text = accidents.ElementAt(i).DateCall;
                         lvi.SubItems.Add(lvsi);
 
                         lvsi = new ListViewItem.ListViewSubItem();
@@ -243,9 +243,9 @@ namespace InteractiveTable
                     return;
                 }
                 //находим по времени происшествие
-                foreach (var var in AccidentObj.AccidentList)
+                foreach (var var in PhoneObj.AccidentList)
                     if (var.DataTime == selected)
-                        AccidentObj.ObjAccident = var;
+                        PhoneObj.ObjAccident = var;
                 Button = "Edit";
                 AddAccidentForm newForm = new AddAccidentForm();
                 newForm.Show();
@@ -273,11 +273,11 @@ namespace InteractiveTable
                     return;
                 }
                 //находим по времени происшествие
-                AccidentObj obj = new AccidentObj();
-                foreach (var var in AccidentObj.AccidentList)
+                PhoneObj obj = new PhoneObj();
+                foreach (var var in PhoneObj.AccidentList)
                     if (var.DataTime == selected)
                         obj = var;
-                AccidentObj.DeleteAccident(obj);
+                PhoneObj.DeleteAccident(obj);
             }
             catch (Exception e1)
             {
@@ -291,7 +291,7 @@ namespace InteractiveTable
             try
             {
                 timer1.Interval = 10000;
-                List<AccidentObj> AccidentList = new List<AccidentObj>();
+                List<PhoneObj> AccidentList = new List<PhoneObj>();
                 using (AccidentContext db = new AccidentContext())
                 {
                     var kinds = new[] {"Удален", "Изменен"};
@@ -304,12 +304,12 @@ namespace InteractiveTable
 
                 if (SizeFont != "")
                 {
-                    AccidentObj.AccidentList = AccidentList.GetRange(0, AccidentList.Count);
+                    PhoneObj.AccidentList = AccidentList.GetRange(0, AccidentList.Count);
                     ListViewCompleting(sender, e);
                 }
-                if (!AccidentObj.GetHash(AccidentList, AccidentObj.AccidentList))
+                if (!PhoneObj.GetHash(AccidentList, PhoneObj.AccidentList))
                 {
-                    AccidentObj.AccidentList = AccidentList.GetRange(0, AccidentList.Count);
+                    PhoneObj.AccidentList = AccidentList.GetRange(0, AccidentList.Count);
                     ListViewCompleting(sender, e);
                 }
             }

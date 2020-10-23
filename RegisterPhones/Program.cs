@@ -3,10 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 
-using System.Security.Principal;
-
-
-namespace InteractiveTable
+namespace RegisterPhones
 {
     static class Program
     {
@@ -16,14 +13,10 @@ namespace InteractiveTable
         [STAThread]
         static void Main()
         {
-            
-            //AccidentObj.CreateTable();
-            //AccidentObj.UploadTable("Accident1.csv");
+            PhoneObj.CreateTable();
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Form1());
-            
-
         }
     }
 }
