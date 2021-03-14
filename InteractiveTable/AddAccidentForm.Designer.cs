@@ -41,6 +41,8 @@
             this.radioButton_ZAO = new System.Windows.Forms.RadioButton();
             this.radioButton_North = new System.Windows.Forms.RadioButton();
             this.radioButton_South = new System.Windows.Forms.RadioButton();
+            this.radioButton_ELEV = new System.Windows.Forms.RadioButton();
+            this.radioButton_INFO = new System.Windows.Forms.RadioButton();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -116,6 +118,8 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.radioButton_INFO);
+            this.groupBox1.Controls.Add(this.radioButton_ELEV);
             this.groupBox1.Controls.Add(this.radioButton_GKS3);
             this.groupBox1.Controls.Add(this.radioButton_ZAO);
             this.groupBox1.Controls.Add(this.radioButton_North);
@@ -129,23 +133,23 @@
             // radioButton_GKS3
             // 
             this.radioButton_GKS3.AutoSize = true;
-            this.radioButton_GKS3.Location = new System.Drawing.Point(160, 43);
+            this.radioButton_GKS3.Location = new System.Drawing.Point(96, 43);
             this.radioButton_GKS3.Name = "radioButton_GKS3";
-            this.radioButton_GKS3.Size = new System.Drawing.Size(53, 17);
+            this.radioButton_GKS3.Size = new System.Drawing.Size(56, 17);
             this.radioButton_GKS3.TabIndex = 3;
             this.radioButton_GKS3.TabStop = true;
-            this.radioButton_GKS3.Text = "GKS3";
+            this.radioButton_GKS3.Text = "ЖКС3";
             this.radioButton_GKS3.UseVisualStyleBackColor = true;
             // 
             // radioButton_ZAO
             // 
             this.radioButton_ZAO.AutoSize = true;
-            this.radioButton_ZAO.Location = new System.Drawing.Point(160, 19);
+            this.radioButton_ZAO.Location = new System.Drawing.Point(96, 19);
             this.radioButton_ZAO.Name = "radioButton_ZAO";
             this.radioButton_ZAO.Size = new System.Drawing.Size(47, 17);
             this.radioButton_ZAO.TabIndex = 2;
             this.radioButton_ZAO.TabStop = true;
-            this.radioButton_ZAO.Text = "ZAO";
+            this.radioButton_ZAO.Text = "ЗАО";
             this.radioButton_ZAO.UseVisualStyleBackColor = true;
             // 
             // radioButton_North
@@ -153,10 +157,10 @@
             this.radioButton_North.AutoSize = true;
             this.radioButton_North.Location = new System.Drawing.Point(23, 43);
             this.radioButton_North.Name = "radioButton_North";
-            this.radioButton_North.Size = new System.Drawing.Size(56, 17);
+            this.radioButton_North.Size = new System.Drawing.Size(60, 17);
             this.radioButton_North.TabIndex = 1;
             this.radioButton_North.TabStop = true;
-            this.radioButton_North.Text = "Север";
+            this.radioButton_North.Text = "СЕВЕР";
             this.radioButton_North.UseVisualStyleBackColor = true;
             // 
             // radioButton_South
@@ -164,11 +168,33 @@
             this.radioButton_South.AutoSize = true;
             this.radioButton_South.Location = new System.Drawing.Point(23, 20);
             this.radioButton_South.Name = "radioButton_South";
-            this.radioButton_South.Size = new System.Drawing.Size(39, 17);
+            this.radioButton_South.Size = new System.Drawing.Size(40, 17);
             this.radioButton_South.TabIndex = 0;
             this.radioButton_South.TabStop = true;
-            this.radioButton_South.Text = "Юг";
+            this.radioButton_South.Text = "ЮГ";
             this.radioButton_South.UseVisualStyleBackColor = true;
+            // 
+            // radioButton_ELEV
+            // 
+            this.radioButton_ELEV.AutoSize = true;
+            this.radioButton_ELEV.Location = new System.Drawing.Point(175, 20);
+            this.radioButton_ELEV.Name = "radioButton_ELEV";
+            this.radioButton_ELEV.Size = new System.Drawing.Size(69, 17);
+            this.radioButton_ELEV.TabIndex = 4;
+            this.radioButton_ELEV.TabStop = true;
+            this.radioButton_ELEV.Text = "ЛИФТЫ";
+            this.radioButton_ELEV.UseVisualStyleBackColor = true;
+            // 
+            // radioButton_INFO
+            // 
+            this.radioButton_INFO.AutoSize = true;
+            this.radioButton_INFO.Location = new System.Drawing.Point(175, 43);
+            this.radioButton_INFO.Name = "radioButton_INFO";
+            this.radioButton_INFO.Size = new System.Drawing.Size(60, 17);
+            this.radioButton_INFO.TabIndex = 5;
+            this.radioButton_INFO.TabStop = true;
+            this.radioButton_INFO.Text = "ИНФО";
+            this.radioButton_INFO.UseVisualStyleBackColor = true;
             // 
             // AddAccidentForm
             // 
@@ -211,5 +237,7 @@
         private System.Windows.Forms.RadioButton radioButton_ZAO;
         private System.Windows.Forms.RadioButton radioButton_North;
         private System.Windows.Forms.RadioButton radioButton_South;
+        private System.Windows.Forms.RadioButton radioButton_INFO;
+        private System.Windows.Forms.RadioButton radioButton_ELEV;
     }
 }

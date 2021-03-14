@@ -20,6 +20,8 @@ namespace InteractiveTable
         static bool _buttonNordEnabled = false;
         static bool _buttonVasEnabled = false;
         static bool _buttonGks3Enabled = false;
+        static bool _buttonElevEnabled = false;
+        static bool _buttonInfoEnabled = false;
         public static string Button = "";
         private static string SizeFont = "";
 
@@ -83,17 +85,17 @@ namespace InteractiveTable
             listViewAccident.Columns.Add(colHead);
 
             colHead = new ColumnHeader();
-            colHead.Width = 122;
+            colHead.Width = 180;
             colHead.Text = "Адрес";
             listViewAccident.Columns.Add(colHead);
 
             colHead = new ColumnHeader();
-            colHead.Width = 214;
+            colHead.Width = 370;
             colHead.Text = "Происшествие";
             listViewAccident.Columns.Add(colHead);
 
             colHead = new ColumnHeader();
-            colHead.Width = 87;
+            colHead.Width = 120;
             colHead.Text = "Время работ";
             listViewAccident.Columns.Add(colHead);
 
@@ -164,6 +166,30 @@ namespace InteractiveTable
                             _buttonGks3Enabled = true;
                         }
                         break;
+                    case "System.Windows.Forms.Button, Text: ЛИФТЫ":
+                        if (_buttonElevEnabled)
+                        {
+                            button_Elev.BackColor = System.Drawing.Color.White;
+                            _buttonElevEnabled = false;
+                        }
+                        else
+                        {
+                            button_Elev.BackColor = System.Drawing.Color.DarkOrange;
+                            _buttonElevEnabled = true;
+                        }
+                        break;
+                    case "System.Windows.Forms.Button, Text: ИНФО":
+                        if (_buttonInfoEnabled)
+                        {
+                            button_Info.BackColor = System.Drawing.Color.White;
+                            _buttonInfoEnabled = false;
+                        }
+                        else
+                        {
+                            button_Info.BackColor = System.Drawing.Color.Pink;
+                            _buttonInfoEnabled = true;
+                        }
+                        break;
                     default:
                         break;
                 }
@@ -181,6 +207,10 @@ namespace InteractiveTable
                         districtList.Add("ЮГ");
                     if (_buttonVasEnabled)
                         districtList.Add("ЗАО");
+                    if (_buttonElevEnabled)
+                        districtList.Add("ЛИФТЫ");
+                    if (_buttonInfoEnabled)
+                        districtList.Add("ИНФО");
                     var accidents = AccidentObj.AccidentList.Where(p => districtList.Contains(p.District));
                     for (int i = 0; i < accidents.Count(); i++)
                     {

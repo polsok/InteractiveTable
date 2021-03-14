@@ -42,6 +42,8 @@ namespace InteractiveTable
             this.listViewAccident = new System.Windows.Forms.ListView();
             this.buttonStory = new System.Windows.Forms.Button();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.button_Elev = new System.Windows.Forms.Button();
+            this.button_Info = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // button_South
@@ -97,7 +99,7 @@ namespace InteractiveTable
             // button_Add
             // 
             this.button_Add.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this.button_Add.Location = new System.Drawing.Point(12, 495);
+            this.button_Add.Location = new System.Drawing.Point(139, 495);
             this.button_Add.Name = "button_Add";
             this.button_Add.Size = new System.Drawing.Size(123, 31);
             this.button_Add.TabIndex = 5;
@@ -108,7 +110,7 @@ namespace InteractiveTable
             // button_Del
             // 
             this.button_Del.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this.button_Del.Location = new System.Drawing.Point(270, 495);
+            this.button_Del.Location = new System.Drawing.Point(397, 495);
             this.button_Del.Name = "button_Del";
             this.button_Del.Size = new System.Drawing.Size(123, 31);
             this.button_Del.TabIndex = 6;
@@ -119,7 +121,7 @@ namespace InteractiveTable
             // button_Edit
             // 
             this.button_Edit.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this.button_Edit.Location = new System.Drawing.Point(141, 495);
+            this.button_Edit.Location = new System.Drawing.Point(268, 495);
             this.button_Edit.Name = "button_Edit";
             this.button_Edit.Size = new System.Drawing.Size(123, 31);
             this.button_Edit.TabIndex = 8;
@@ -145,7 +147,7 @@ namespace InteractiveTable
             this.listViewAccident.HoverSelection = true;
             this.listViewAccident.Location = new System.Drawing.Point(12, 98);
             this.listViewAccident.Name = "listViewAccident";
-            this.listViewAccident.Size = new System.Drawing.Size(510, 374);
+            this.listViewAccident.Size = new System.Drawing.Size(766, 374);
             this.listViewAccident.TabIndex = 10;
             this.listViewAccident.UseCompatibleStateImageBehavior = false;
             this.listViewAccident.View = System.Windows.Forms.View.Details;
@@ -153,7 +155,7 @@ namespace InteractiveTable
             // buttonStory
             // 
             this.buttonStory.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this.buttonStory.Location = new System.Drawing.Point(402, 495);
+            this.buttonStory.Location = new System.Drawing.Point(529, 495);
             this.buttonStory.Name = "buttonStory";
             this.buttonStory.Size = new System.Drawing.Size(123, 31);
             this.buttonStory.TabIndex = 11;
@@ -164,13 +166,41 @@ namespace InteractiveTable
             // contextMenuStrip1
             // 
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(181, 26);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
+            // 
+            // button_Elev
+            // 
+            this.button_Elev.BackColor = System.Drawing.Color.White;
+            this.button_Elev.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.button_Elev.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.button_Elev.Location = new System.Drawing.Point(528, 12);
+            this.button_Elev.Name = "button_Elev";
+            this.button_Elev.Size = new System.Drawing.Size(123, 80);
+            this.button_Elev.TabIndex = 12;
+            this.button_Elev.Text = "ЛИФТЫ";
+            this.button_Elev.UseVisualStyleBackColor = false;
+            this.button_Elev.Click += new System.EventHandler(this.ListViewCompleting);
+            // 
+            // button_Info
+            // 
+            this.button_Info.BackColor = System.Drawing.Color.White;
+            this.button_Info.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.button_Info.Font = new System.Drawing.Font("Microsoft Sans Serif", 21.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.button_Info.Location = new System.Drawing.Point(657, 12);
+            this.button_Info.Name = "button_Info";
+            this.button_Info.Size = new System.Drawing.Size(123, 80);
+            this.button_Info.TabIndex = 13;
+            this.button_Info.Text = "ИНФО";
+            this.button_Info.UseVisualStyleBackColor = false;
+            this.button_Info.Click += new System.EventHandler(this.ListViewCompleting);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(537, 548);
+            this.ClientSize = new System.Drawing.Size(790, 548);
+            this.Controls.Add(this.button_Info);
+            this.Controls.Add(this.button_Elev);
             this.Controls.Add(this.buttonStory);
             this.Controls.Add(this.listViewAccident);
             this.Controls.Add(this.button_Edit);
@@ -199,6 +229,8 @@ namespace InteractiveTable
         private System.Windows.Forms.ListView listViewAccident;
         private System.Windows.Forms.Button buttonStory;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private System.Windows.Forms.Button button_Elev;
+        private System.Windows.Forms.Button button_Info;
     }
 }
 

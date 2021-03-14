@@ -33,6 +33,12 @@ namespace InteractiveTable
                     case "ЮГ":
                         radioButton_South.Checked = true;
                         break;
+                    case "ЛИФТЫ":
+                        radioButton_ELEV.Checked = true;
+                        break;
+                    case "ИНФО":
+                        radioButton_INFO.Checked = true;
+                        break;
                     default:
                         break;
                 }
@@ -51,7 +57,8 @@ namespace InteractiveTable
         {
             //проверяем что все поля заполнены
             if (radioButton_GKS3.Checked != true && radioButton_North.Checked != true &&
-                radioButton_South.Checked != true && radioButton_ZAO.Checked != true)
+                radioButton_South.Checked != true && radioButton_ZAO.Checked != true &&
+                radioButton_ELEV.Checked != true && radioButton_INFO.Checked != true)
             {
                 MessageBox.Show("Не выбран район");
                 return;
@@ -84,7 +91,11 @@ namespace InteractiveTable
                 district = "СЕВЕР";
             if (radioButton_South.Checked == true)
                 district = "ЮГ";
-            
+            if (radioButton_ELEV.Checked == true)
+                district = "ЛИФТЫ";
+            if (radioButton_INFO.Checked == true)
+                district = "ИНФО";
+
             if (Form1.Button == "Add")
                 AccidentObj.AddAccident(new AccidentObj(district, textBox_Adress.Text, richTextBox1.Text, textBox_time.Text));
             if (Form1.Button == "Edit")
